@@ -21,6 +21,7 @@ void set_thread_name(const char* name);
 
 int set_realtime_priority(int level);
 int set_core_affinity(int core);
+int set_cpuset(const char* cpuset);
 
 namespace util {
 

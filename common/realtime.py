@@ -2,6 +2,7 @@
 import gc
 import os
 import time
+import subprocess
 import multiprocessing
 from typing import Optional
 
@@ -42,7 +43,9 @@ def set_core_affinity(core: int) -> None:
     os.sched_setaffinity(0, [core,])
 
 
-def config_realtime_process(core: int, priority: int) -> None:
+def config_realtime_process(core: int, priority: int, cpuset: Optional[str] = None) -> None:
+  if cpuset is not None:
+    subprocess.check_call(f"echo {os.getpid()} > /dev/cpuset/{cpuset}/tasks", shell=True)
   gc.disable()
   set_realtime_priority(priority)
   set_core_affinity(core)

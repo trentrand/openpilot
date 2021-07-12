@@ -51,6 +51,16 @@ int set_core_affinity(int core) {
 #endif
 }
 
+int set_cpuset(const char* cpuset) {
+#ifdef __linux__
+  long tid = syscall(SYS_gettid);
+  auto cmd = util::string_format("echo %ld > /dev/cpuset/%s/tasks", tid, cpuset);
+  return std::system(cmd.c_str());
+#else
+  return -1;
+#endif
+}
+
 namespace util {
 
 std::string read_file(const std::string& fn) {

@@ -554,12 +554,13 @@ int main() {
   int err;
   LOGW("starting boardd");
 
-  // set process priority and affinity
+  // config as RT
+  err = set_cpuset("perf");
+  assert(err == 0);
   err = set_realtime_priority(54);
-  LOG("set priority returns %d", err);
-
+  assert(err == 0);
   err = set_core_affinity(Hardware::TICI() ? 4 : 3);
-  LOG("set affinity returns %d", err);
+  assert(err == 0);
 
   while (!do_exit) {
     std::vector<std::thread> threads;
