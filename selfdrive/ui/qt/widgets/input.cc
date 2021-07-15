@@ -83,11 +83,11 @@ InputDialog::InputDialog(const QString &title, QWidget *parent, const QString &s
     eye_btn->setCheckable(true);
     QObject::connect(eye_btn, &QPushButton::toggled, [=](bool checked) {
       if (checked) {
-        eye_btn->setIcon(QIcon("../assets/img_eye_closed.svg"));
+        eye_btn->setIcon(QIcon(":/img_eye_closed.svg"));
         eye_btn->setIconSize(QSize(81, 54));
         line->setEchoMode(QLineEdit::PasswordEchoOnEdit);
       } else {
-        eye_btn->setIcon(QIcon("../assets/img_eye_open.svg"));
+        eye_btn->setIcon(QIcon(":/img_eye_open.svg"));
         eye_btn->setIconSize(QSize(81, 44));
         line->setEchoMode(QLineEdit::Normal);
       }

@@ -19,7 +19,13 @@ if arch == "Darwin":
   del base_libs[base_libs.index('OpenCL')]
   qt_env['FRAMEWORKS'] += ['OpenCL']
 
-widgets_src = ["qt/util.cc",
+# build
+assets = "#selfdrive/assets/assets.rcc"
+assets_src = "#selfdrive/assets/assets.qrc"
+qt_env.Command(assets, assets_src, f"rcc -binary $SOURCES -o $TARGET")
+qt_env.Depends(assets, Glob('#selfdrive/assets/*', exclude=[assets, assets_src]))
+
+widgets_src = ["qt/util.cc", assets,
                "qt/widgets/input.cc", "qt/widgets/drive_stats.cc",
                "qt/widgets/ssh_keys.cc", "qt/widgets/toggle.cc", "qt/widgets/controls.cc",
                "qt/widgets/offroad_alerts.cc", "qt/widgets/setup.cc", "qt/widgets/keyboard.cc",

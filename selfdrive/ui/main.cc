@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QResource>
 #include <QSslConfiguration>
 
 #include "selfdrive/hardware/hw.h"
