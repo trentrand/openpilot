@@ -447,15 +447,19 @@ def cpp_replay_process(cfg, lr, fingerprint=None):
 
   try:
     with Timeout(TIMEOUT):
+      print("waiting for readers")
       while not all(pm.all_readers_updated(s) for s in cfg.pub_sub.keys()):
         time.sleep(0)
+      print("done")
 
       # Make sure all subscribers are connected
+      print("recv all")
       sockets = {s: messaging.sub_sock(s, timeout=2000) for s in sub_sockets}
       for s in sub_sockets:
         messaging.recv_one_or_none(sockets[s])
+      print("done")
 
-      for i, msg in enumerate(tqdm(pub_msgs, disable=CI)):
+      for i, msg in enumerate(tqdm(pub_msgs, disable=False)):
         pm.send(msg.which(), msg.as_builder())
 
         resp_sockets = cfg.pub_sub[msg.which()] if cfg.should_recv_callback is None else cfg.should_recv_callback(msg)
