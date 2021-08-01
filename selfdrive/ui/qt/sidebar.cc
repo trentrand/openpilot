@@ -83,7 +83,13 @@ void Sidebar::updateState(const UIState &s) {
     tempStatus = warning_color;
   }
   setProperty("tempStatus", tempStatus);
-  setProperty("tempVal", (int)deviceState.getAmbientTempC());
+  if (params.getBool("IsMetric")) {
+    const int tempC = (int)deviceState.getAmbientTempC();
+    setProperty("tempStr", QString("%1°C").arg(tempC));
+  } else {
+    const int tempF = (int)(deviceState.getAmbientTempC() * 1.8) + 32;
+    setProperty("tempStr", QString("%1°F").arg(tempF));
+  }
 
   QString pandaStr = "VEHICLE\nONLINE";
   QColor pandaStatus = good_color;
@@ -124,7 +130,7 @@ void Sidebar::paintEvent(QPaintEvent *event) {
   p.drawText(r, Qt::AlignCenter, net_type);
 
   // metrics
-  drawMetric(p, "TEMP", QString("%1°C").arg(temp_val), temp_status, 338);
+  drawMetric(p, "TEMP", temp_str, temp_status, 338);
   drawMetric(p, panda_str, "", panda_status, 518);
   drawMetric(p, connect_str, "", connect_status, 676);
 }
